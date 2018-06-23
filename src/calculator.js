@@ -8,7 +8,7 @@ import styles from './calculator.module.css'
 // handle with Jest and many people will want to know :).
 const CalculatorDisplay = Loadable({
   loader: () => import('./calculator-display').then(mod => mod.default),
-  loading: () => <div style={{height: 120}}>Loading display...</div>,
+  loading: () => <div style={{height: 120}}>Loading display...</div>
 })
 
 class CalculatorKey extends React.Component {
@@ -28,7 +28,7 @@ const CalculatorOperations = {
   '*': (prevValue, nextValue) => prevValue * nextValue,
   '+': (prevValue, nextValue) => prevValue + nextValue,
   '-': (prevValue, nextValue) => prevValue - nextValue,
-  '=': (prevValue, nextValue) => nextValue,
+  '=': (prevValue, nextValue) => nextValue
 }
 
 class Calculator extends React.Component {
@@ -36,7 +36,7 @@ class Calculator extends React.Component {
     value: null,
     displayValue: '0',
     operator: null,
-    waitingForOperand: false,
+    waitingForOperand: false
   }
 
   clearAll() {
@@ -44,13 +44,13 @@ class Calculator extends React.Component {
       value: null,
       displayValue: '0',
       operator: null,
-      waitingForOperand: false,
+      waitingForOperand: false
     })
   }
 
   clearDisplay() {
     this.setState({
-      displayValue: '0',
+      displayValue: '0'
     })
   }
 
@@ -58,7 +58,7 @@ class Calculator extends React.Component {
     const {displayValue} = this.state
 
     this.setState({
-      displayValue: displayValue.substring(0, displayValue.length - 1) || '0',
+      displayValue: displayValue.substring(0, displayValue.length - 1) || '0'
     })
   }
 
@@ -67,7 +67,7 @@ class Calculator extends React.Component {
     const newValue = parseFloat(displayValue) * -1
 
     this.setState({
-      displayValue: String(newValue),
+      displayValue: String(newValue)
     })
   }
 
@@ -81,7 +81,7 @@ class Calculator extends React.Component {
     const newValue = parseFloat(displayValue) / 100
 
     this.setState({
-      displayValue: String(newValue.toFixed(fixedDigits.length + 2)),
+      displayValue: String(newValue.toFixed(fixedDigits.length + 2))
     })
   }
 
@@ -91,7 +91,7 @@ class Calculator extends React.Component {
     if (!/\./.test(displayValue)) {
       this.setState({
         displayValue: `${displayValue}.`,
-        waitingForOperand: false,
+        waitingForOperand: false
       })
     }
   }
@@ -102,12 +102,12 @@ class Calculator extends React.Component {
     if (waitingForOperand) {
       this.setState({
         displayValue: String(digit),
-        waitingForOperand: false,
+        waitingForOperand: false
       })
     } else {
       this.setState({
         displayValue:
-          displayValue === '0' ? String(digit) : displayValue + digit,
+          displayValue === '0' ? String(digit) : displayValue + digit
       })
     }
   }
@@ -118,7 +118,7 @@ class Calculator extends React.Component {
 
     if (value == null) {
       this.setState({
-        value: inputValue,
+        value: inputValue
       })
     } else if (operator) {
       const currentValue = value || 0
@@ -126,13 +126,13 @@ class Calculator extends React.Component {
 
       this.setState({
         value: newValue,
-        displayValue: String(newValue),
+        displayValue: String(newValue)
       })
     }
 
     this.setState({
       waitingForOperand: true,
-      operator: nextOperator,
+      operator: nextOperator
     })
   }
 
@@ -169,16 +169,6 @@ class Calculator extends React.Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown)
-    const stateFromLocalStorage = window.localStorage.getItem(
-      'calculator-state',
-    )
-    if (stateFromLocalStorage) {
-      this.setState(JSON.parse(stateFromLocalStorage))
-    }
-  }
-
-  componentDidUpdate() {
-    window.localStorage.setItem('calculator-state', JSON.stringify(this.state))
   }
 
   componentWillUnmount() {
